@@ -3,6 +3,8 @@ import { isMobile, prefersReducedMotion } from './env';
 
 const TITLE = 'WHAT A NATIONAL LEVEL HACKATHON LOOKS LIKE?';
 const PROGRESS_STEPS = [0, 19, 84, 100];
+/** The line printed under each counter value, centred beneath the digits. */
+const PROGRESS_CAPTIONS = ['3 Years', '20 Events', '24 Hackathon', 'welcome'];
 
 type HiddenListener = () => void;
 
@@ -23,13 +25,16 @@ export interface LoaderController {
 export function startLoader(root: HTMLElement): LoaderController | null {
   const number = root.querySelector<HTMLElement>('#loader-number');
   const title = root.querySelector<HTMLElement>('#loader-title');
-  return number && title ? runBootSequence(root, number, title) : null;
+  const caption = root.querySelector<HTMLElement>('#loader-caption');
+  if (!number || !title) return null;
+  return runBootSequence(root, number, title, caption ?? null);
 }
 
 function runBootSequence(
   root: HTMLElement,
   number: HTMLElement,
-  title: HTMLElement
+  title: HTMLElement,
+  caption: HTMLElement | null
 ): LoaderController {
   history.scrollRestoration = 'manual';
   window.scrollTo(0, 0);
@@ -182,6 +187,16 @@ function runBootSequence(
   function runCounter(index: number): void {
     if (index >= PROGRESS_STEPS.length) return;
     const value = PROGRESS_STEPS[index];
+    if (caption) {
+      caption.textContent = PROGRESS_CAPTIONS[index];
+      if (!prefersReducedMotion) {
+        gsap.fromTo(
+          caption,
+          { opacity: 0, y: 10 },
+          { opacity: 0.75, y: 0, duration: 0.45, ease: 'power3.out' }
+        );
+      }
+    }
     showNumber(value, () => {
       if (value === 100) {
         gsap.to(number, {
@@ -224,6 +239,7 @@ function runBootSequence(
     title.textContent = TITLE;
     number.textContent = '100';
     number.style.color = '#cc0000';
+    if (caption) caption.textContent = PROGRESS_CAPTIONS[PROGRESS_CAPTIONS.length - 1];
     animationDone = true;
     tryReveal();
   } else {

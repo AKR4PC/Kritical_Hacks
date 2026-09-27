@@ -72,9 +72,10 @@ export function Section8Closing() {
         id="s8-holm"
         style={{
           fontFamily: 'var(--font-serif)',
-          fontSize: 'clamp(10px, 1vw, 14px)',
-          color: 'rgba(0,0,0,0.5)',
-          letterSpacing: '6px',
+          fontSize: 'clamp(14px, 1.35vw, 21px)',
+          fontWeight: 500,
+          color: 'rgba(0,0,0,0.72)',
+          letterSpacing: '5px',
           textAlign: 'center',
           opacity: 0,
           marginTop: '40px',
@@ -87,12 +88,13 @@ export function Section8Closing() {
         id="s8-url"
         style={{
           fontFamily: 'var(--font-serif)',
-          fontSize: 'clamp(10px, 1vw, 14px)',
-          color: 'rgba(0,0,0,0.3)',
-          letterSpacing: '4px',
+          fontSize: 'clamp(17px, 1.65vw, 26px)',
+          fontWeight: 500,
+          color: 'rgba(0,0,0,0.88)',
+          letterSpacing: '3px',
           textAlign: 'center',
           opacity: 0,
-          marginTop: '10px',
+          marginTop: '12px',
         }}
       >
         {CLOSING.names}

@@ -61,16 +61,23 @@ export function Section3Bulletin() {
             The headline is the only block set in reverse: a black plate carrying
             red type. `fit-content` keeps the plate hugging the words instead of
             flooding the column, so the rest of the sheet stays newsprint.
+
+            The plate must never be squeezed by the column: it is the one child
+            with `overflow: hidden`, so any flex shrink silently crops the type —
+            the "175K+" half of the line just disappears into the black.
+            `flex-shrink: 0` plus sizing that keeps the line on one row holds it
+            together at every viewport.
           */}
           <h1
             id="s3-headline"
             style={{
               width: 'fit-content',
               maxWidth: '100%',
-              padding: '0.05em 0.16em 0.07em',
+              flexShrink: 0,
+              padding: '0.06em 0.1em 0.08em',
               background: 'var(--black)',
               color: 'var(--red)',
-              fontSize: 'clamp(48px, 6vw, 96px)',
+              fontSize: 'clamp(48px, 5.8vw, 96px)',
               lineHeight: 0.9,
               marginBottom: '20px',
               overflow: 'hidden',
@@ -136,7 +143,7 @@ export function Section3Bulletin() {
         <div id="s3-photo-wrap" style={{ width: '45%', position: 'relative', overflow: 'hidden' }}>
           <img
             id="s3-photo"
-            src="propaganda-img.png"
+            src="page3.jpeg"
             loading="lazy"
             alt="A crowd of uniformed officers and soldiers celebrating in the street"
             style={{

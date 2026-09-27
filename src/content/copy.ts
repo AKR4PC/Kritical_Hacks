@@ -18,7 +18,7 @@ export const EVENT = {
  * wordmark rather than a slogan, so only three of the four are text.
  */
 export const SLOGANS = {
-  topLeft: 'ASSET MERKLE × IGDTUW',
+  topLeft: 'ASSETMERKLE IGDTUW',
   bottomLeft: '24HR HACKATHON',
   bottomRight: "LET'S BUILD TOGETHER",
 } as const;
@@ -167,7 +167,7 @@ export const TRACKS = {
 
 export const GUIDELINES = {
   heading: 'GUIDELINES FOR HACKATHON',
-  subline: 'ASSETMERKLE × IGDTUW',
+  subline: 'ASSETMERKLE × TINYFISH',
   items: [
     'Open to participants from all academic backgrounds, branches, specializations, courses and years, subject to category eligibility.',
     'Register under either Student or Professional within your chosen track.',
@@ -224,15 +224,15 @@ export const CARD_STACK = {
   ],
   /** One editorial tag per card, in landing order. */
   labels: [
-    'JUDGE #1',
-    'JUDGE #2',
-    'JUDGE #3',
     'MENTOR #1',
     'MENTOR #2',
     'MENTOR #3',
     'MENTOR #4',
     'MENTOR #5',
     'MENTOR #6',
+    'JUDGE #1',
+    'JUDGE #2',
+    'JUDGE #3',
   ] as readonly string[],
 } as const;
 

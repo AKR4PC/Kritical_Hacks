@@ -42,6 +42,19 @@ export const Loader = forwardRef<HTMLDivElement>(function Loader(_, ref) {
       />
 
       <div
+        id="loader-caption"
+        style={{
+          fontFamily: 'var(--font-serif)',
+          fontSize: 'clamp(13px, 1.35vw, 21px)',
+          color: 'var(--white)',
+          letterSpacing: '6px',
+          opacity: 0.75,
+          minHeight: '26px',
+          textAlign: 'center',
+        }}
+      />
+
+      <div
         id="loader-title"
         style={{
           fontFamily: 'var(--font-serif)',

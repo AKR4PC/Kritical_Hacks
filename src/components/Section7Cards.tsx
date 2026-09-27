@@ -31,6 +31,8 @@ export function Section7Cards() {
         {CARD_STACK.heading}
       </div>
 
+      <div id="s7-pending">SOON TO BE REVEALED</div>
+
       <div
         id="s7-math"
         aria-hidden="true"

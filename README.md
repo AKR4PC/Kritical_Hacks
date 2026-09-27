@@ -87,8 +87,8 @@ hairline face rather than a slab.
 One judgement call worth stating: the stack settles within about 24px of itself,
 so nine tags held open at once stack into an illegible yellow smear. Each tag
 therefore prints itself as its card lands and strikes the previous one — the
-roster reads `JUDGE #1 → … → MENTOR #6` in scroll order, and two tags never
-collide.
+roster reads `MENTOR #1 → … → JUDGE #3` in scroll order, mentors landing first at
+the foot of the stack and judges on top, and two tags never collide.
 
 ## Accessibility
 
