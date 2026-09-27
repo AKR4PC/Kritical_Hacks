@@ -1,0 +1,30 @@
+/* ─────────────────────────────────────────────────────────────
+   Palette + type tokens, sampled directly from the source design.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  /* Propaganda red — section backdrops, loader title, redaction reveals */
+  --red: #cc0000;
+  --red-glow: rgba(204, 0, 0, 0.9);
+  --red-glow-soft: rgba(204, 0, 0, 0.4);
+  /* A deeper cut of the same red, for plates that sit on top of the red field */
+  --red-deep: #7d0000;
+
+  /* Judge / mentor tags: newsprint yellow, letterpress red */
+  --tag-yellow: #f0c419;
+
+  /* Newsprint */
+  --paper: #f5f0e8;
+  --ink: #1a1a1a;
+
+  /* Base */
+  --black: #000000;
+  --white: #ffffff;
+
+  /* Selection */
+  --selection-bg: #000000;
+  --selection-fg: #ff0000;
+
+  /* Shared type stacks */
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-serif: 'EB Garamond', serif;
+}

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store
+Thumbs.db
+
+# Never commit local secrets or environment overrides
+.env
+.env.*
+*.local

@@ -1,0 +1,954 @@
+@import './tokens.css';
+
+::selection {
+  background: var(--selection-bg);
+  color: var(--selection-fg);
+}
+
+::-moz-selection {
+  background: var(--selection-bg);
+  color: var(--selection-fg);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: none;
+}
+
+/* Section 8 is the interactive end-state: the system cursor returns. */
+#section-8,
+#section-8 * {
+  cursor: auto;
+}
+
+html {
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  height: auto;
+  min-height: 100vh;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Custom cursor label: THOUGHTCRIME / DOUBLETHINK ───────────── */
+#cursor-text {
+  position: fixed;
+  left: -9999px;
+  top: -9999px;
+  pointer-events: none;
+  z-index: 9999;
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--white);
+  letter-spacing: 3px;
+  transform: translate(10px, -50%);
+  will-change: transform;
+  white-space: nowrap;
+  opacity: 0;
+}
+
+/* ── Hero (Three.js) ─────────────────────────────────────────── */
+#hero-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  will-change: opacity, transform;
+}
+
+#hero-canvas::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: inset 0 0 60px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Slogans pinned to the four corners of the viewport. */
+.corner {
+  position: fixed;
+  font-family: var(--font-display);
+  font-size: clamp(14px, 1.8vw, 28px);
+  color: var(--white);
+  letter-spacing: 3px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+#top-left {
+  top: 5%;
+  left: 5%;
+}
+
+#top-right {
+  top: 5%;
+  right: 5%;
+}
+
+#bottom-left {
+  bottom: 6%;
+  left: 5%;
+}
+
+#bottom-right {
+  bottom: 6%;
+  right: 5%;
+}
+
+/*
+ * The event name, set on the same rail as the slogans but at the vertical
+ * midpoint so it brackets the year hanging from the hand.
+ */
+#name-left {
+  top: 50%;
+  left: 5%;
+  transform: translateY(-50%);
+}
+
+#name-right {
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
+}
+
+/*
+ * The TinyFish wordmark holds the top-right slogan slot. The artwork ships
+ * black, so it is knocked out to white to sit with the type it replaced at the
+ * same optical weight; its internal 20%-opacity detail survives the filter.
+ */
+.corner-logo {
+  display: flex;
+  align-items: center;
+  pointer-events: auto;
+  text-decoration: none;
+}
+
+.corner-logo img {
+  display: block;
+  height: clamp(14px, 1.8vw, 28px);
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+.corner-logo:hover img,
+.corner-logo:focus-visible img {
+  filter: brightness(0) invert(1) opacity(0.55);
+}
+
+/* ── Section 2 · Prisoners ───────────────────────────────────── */
+#section-2 {
+  position: fixed !important;
+  overflow: hidden;
+  will-change: opacity;
+  border-radius: none;
+  perspective: 900px;
+}
+
+#section-2::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: none;
+  box-shadow: inset 0 0 60px 20px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  z-index: 300;
+}
+
+#wipe {
+  will-change: transform;
+}
+
+#s2-quote p {
+  will-change: opacity, transform;
+}
+
+#s2-prisoners img {
+  will-change: opacity, transform;
+}
+
+/*
+ * Registration plates under the opening statement. Square corners, hairline
+ * keyline, and a full invert on hover — the same register as the redaction
+ * bars, not a set of rounded buttons.
+ */
+#s2-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.s2-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0.6em 1em 0.52em;
+  border: 1px solid var(--white);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: clamp(13px, 1.35vw, 21px);
+  line-height: 1;
+  letter-spacing: 3px;
+  text-decoration: none;
+  cursor: none;
+  transition:
+    color 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.s2-action-arrow {
+  font-size: 1.05em;
+  line-height: 1;
+  opacity: 0.75;
+}
+
+.s2-action:hover,
+.s2-action:focus-visible {
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--black);
+}
+
+.s2-action:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 3px;
+}
+
+/* ── Section 3 · Victory Bulletin ─────────────────────────────── */
+/*
+ * The source also layers a fractal-noise "newsprint grain" over the bulletin
+ * via `background-image`. Its own inline `background` shorthand resets
+ * `background-image` to `none`, so the sheet is a flat tone — reproduced here
+ * by leaving the layer out rather than shipping a rule that never paints.
+ */
+#section-3 {
+  overflow: hidden;
+}
+
+#section-3::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 300;
+  box-shadow: inset 0 0 60px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* The printed sheet is never perfectly square to the screen. */
+#section-3 .newspaper-left {
+  transform: rotate(-0.3deg);
+}
+
+/* Kicker and byline that sit between the headline rule and the copy. */
+#s3-subhead {
+  margin-bottom: 18px;
+}
+
+#s3-subhead-title {
+  font-size: clamp(20px, 2.2vw, 34px);
+  letter-spacing: 4px;
+  line-height: 1.05;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+#s3-subhead-byline {
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: var(--ink);
+  opacity: 0.72;
+}
+
+/* ── Section 4 · Portrait ────────────────────────────────────── */
+#section-4 {
+  position: relative;
+  overflow: hidden;
+  perspective: 900px;
+}
+
+#section-4::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 300;
+  box-shadow: inset 0 0 80px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Section 4 · Tracks ───────────────────────────────────────── */
+/*
+ * Two bare columns separated by a single hairline — the same rule the bulletin
+ * uses between its masthead and its copy. No cards, no boxes, no radii.
+ */
+#s4-tracks {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 21%;
+  bottom: 7%;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  columnGap: 3%;
+  /* Columns ride the top, the TinyFish note is pinned to the foot of the box. */
+  align-content: space-between;
+  font-family: var(--font-display);
+  color: var(--white);
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.s4-track {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.s4-track + .s4-track {
+  border-left: 1px solid rgba(255, 255, 255, 0.45);
+  padding-left: 3%;
+}
+
+.s4-track-title {
+  font-size: clamp(24px, 2.9vw, 50px);
+  line-height: 0.95;
+  letter-spacing: 2px;
+  color: var(--white);
+}
+
+.s4-track-subtitle {
+  font-size: clamp(12px, 1.15vw, 17px);
+  letter-spacing: 5px;
+  color: var(--white);
+  opacity: 0.8;
+  margin-top: 2px;
+  margin-bottom: 14px;
+}
+
+.s4-track-body {
+  font-size: clamp(11px, 1.02vw, 15px);
+  line-height: 1.55;
+  letter-spacing: 1px;
+  opacity: 0.92;
+  margin-bottom: 16px;
+}
+
+.s4-track-label {
+  font-size: clamp(10px, 0.92vw, 13px);
+  letter-spacing: 5px;
+  color: var(--white);
+  opacity: 0.6;
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  padding-top: 8px;
+  margin-bottom: 7px;
+}
+
+.s4-track-list {
+  list-style: none;
+  font-size: clamp(11px, 1.02vw, 15px);
+  line-height: 1.5;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.s4-track-list li {
+  position: relative;
+  padding-left: 13px;
+}
+
+.s4-track-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  opacity: 0.7;
+}
+
+/* The death note under the columns. */
+#s4-disclaimer {
+  grid-column: 1 / -1;
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: clamp(10px, 1vw, 15px);
+  letter-spacing: 5px;
+  text-align: center;
+  color: var(--white);
+  opacity: 0.7;
+}
+
+/* ── Section 6 cinematic ─────────────────────────────────────── */
+@keyframes s6-vignette-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+#section-6::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, 0.75) 100%);
+  pointer-events: none;
+  z-index: 7;
+  animation: s6-vignette-pulse 4s ease-in-out infinite;
+}
+
+/* ── Section 6 · Guidelines & eligibility ─────────────────────── */
+/*
+ * Structure inside the two crawling columns. The columns already carry the
+ * display face, white on red, so these only add rhythm and a rule to hang on.
+ */
+.s6-heading {
+  letter-spacing: 5px;
+  opacity: 0.72;
+  margin-bottom: 10px;
+}
+
+.s6-para {
+  margin-bottom: 12px;
+}
+
+.s6-rule {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.3);
+  margin: 14px 0 12px;
+}
+
+.s6-sub {
+  letter-spacing: 5px;
+  opacity: 0.72;
+  margin-bottom: 6px;
+}
+
+.s6-list {
+  list-style: none;
+}
+
+.s6-list li {
+  position: relative;
+  padding-left: 13px;
+  margin-bottom: 2px;
+}
+
+.s6-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  opacity: 0.7;
+}
+
+.s6-note {
+  opacity: 0.72;
+}
+
+/* ── Section 3 photo hover ───────────────────────────────────── */
+#s3-photo-wrap {
+  cursor: crosshair;
+}
+
+#s3-photo-wrap img {
+  transition:
+    filter 1.4s ease,
+    transform 1.8s ease;
+  transform-origin: center center;
+}
+
+#s3-photo-wrap:hover img {
+  filter: grayscale(15%) contrast(1.05) sepia(0.5) hue-rotate(320deg) brightness(0.75);
+  transform: scale(1.07);
+}
+
+/* Scan lines that only exist while the photograph is being examined. */
+#s3-photo-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.13) 2px,
+    rgba(0, 0, 0, 0.13) 4px
+  );
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+#s3-photo-wrap:hover::before {
+  opacity: 1;
+}
+
+#s3-photo-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(160, 0, 0, 0) 20%, rgba(160, 0, 0, 0.35) 100%);
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+#s3-photo-wrap:hover::after {
+  opacity: 1;
+}
+
+/* ── Redacted lines: hover to un-redact ──────────────────────── */
+@keyframes redact-wipe {
+  0% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  12% {
+    transform: scaleX(0.97);
+    opacity: 0.6;
+  }
+  22% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  34% {
+    transform: scaleX(0.93);
+    opacity: 0.5;
+  }
+  44% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes truth-appear {
+  from {
+    opacity: 0;
+    letter-spacing: 8px;
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    letter-spacing: 1px;
+    filter: blur(0);
+  }
+}
+
+.redacted-line.redacted {
+  position: relative;
+  display: inline-block;
+  color: transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+.redacted-line.redacted::before {
+  content: '';
+  position: absolute;
+  inset: -1px -4px;
+  background: var(--ink);
+  transform-origin: left center;
+  border-radius: 2px;
+}
+
+.redacted-line.redacted::after {
+  content: attr(data-truth);
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  color: var(--red);
+  font-weight: bold;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.redacted-line.redacted:hover::before {
+  animation: redact-wipe 0.75s cubic-bezier(0.77, 0, 0.18, 1) forwards;
+}
+
+.redacted-line.redacted:hover::after {
+  animation: truth-appear 0.45s ease 0.6s forwards;
+}
+
+/* ── Section 7 cinematic idle ────────────────────────────────── */
+@keyframes s7-breathe {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.014);
+  }
+}
+
+@keyframes s7-flicker {
+  0%,
+  88%,
+  100% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.65;
+  }
+  92% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 0.4;
+  }
+  97% {
+    opacity: 1;
+  }
+}
+
+#s7-cards-wrapper.s7-alive {
+  animation: s7-breathe 5s ease-in-out infinite;
+}
+
+#s7-math.s7-alive {
+  animation: s7-flicker 9s ease-in-out infinite;
+}
+
+/* ── Section 7 cards ─────────────────────────────────────────── */
+.s7-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+.s7-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  mix-blend-mode: screen;
+  user-select: none;
+  pointer-events: none;
+}
+
+/*
+ * Editorial tag pinned to the foot of a card. Sits below the face in every
+ * source image, and stays inside the card so neighbouring cards in the stack
+ * never collide with it.
+ */
+.s7-tag {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  padding: 0.34em 0.5em 0.3em;
+  background: var(--tag-yellow);
+  color: var(--red);
+  font-family: var(--font-display);
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 3px;
+  text-align: center;
+  white-space: nowrap;
+  opacity: 0;
+  will-change: opacity, transform;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Chapter heading for the card stack, set above the pile. */
+#s7-heading {
+  position: absolute;
+  top: 9%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: clamp(22px, 3.4vw, 58px);
+  letter-spacing: 6px;
+  color: var(--white);
+  opacity: 0;
+  z-index: 26;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+/* ── Responsive: Tablet ──────────────────────────────────────── */
+@media (max-width: 1024px) {
+  #hero-canvas {
+    pointer-events: none;
+  }
+
+  /* Section 3: tighter padding */
+  .newspaper-left {
+    padding: 40px 24px !important;
+  }
+
+  /* Section 4: widen SVG */
+  #s4-woman {
+    width: 55% !important;
+  }
+
+  /* Section 6: keep side columns on tablet, slightly narrower */
+  #s6-left {
+    width: 20% !important;
+  }
+  #s6-right {
+    width: 20% !important;
+  }
+
+  /* Section 7: slightly smaller cards */
+  #s7-cards-wrapper {
+    width: 260px !important;
+    height: 360px !important;
+  }
+
+  .s7-tag {
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+}
+
+/* ── Responsive: Mobile ──────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Hide mouse cursor label on touch devices */
+  #cursor-text {
+    display: none !important;
+  }
+
+  /* Corners: shrink all, show all */
+  .corner {
+    font-size: clamp(7px, 2.2vw, 12px) !important;
+    letter-spacing: 1px;
+  }
+
+  .corner-logo img {
+    height: clamp(7px, 2.2vw, 12px) !important;
+  }
+
+  /* Section 2: stack vertically */
+  #section-2 {
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 15% 6% !important;
+    gap: 24px;
+  }
+  #s2-prisoners {
+    width: 75% !important;
+  }
+  #s2-quote {
+    width: 90% !important;
+  }
+  #s2-eye {
+    width: 70px !important;
+    height: 70px !important;
+    top: 3% !important;
+  }
+  #s2-eye > div {
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  /* Section 3: 100vh compact on mobile */
+  #section-3-inner {
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+  .newspaper-left {
+    width: 100% !important;
+    padding: 10px 14px !important;
+    border-right: none !important;
+    border-bottom: 2px solid var(--ink);
+    flex: 1 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    justify-content: space-between !important;
+  }
+  #s3-photo-wrap {
+    width: 100% !important;
+    height: 44vh !important;
+    flex-shrink: 0 !important;
+  }
+  #s3-headline {
+    font-size: clamp(22px, 6vw, 36px) !important;
+    margin-bottom: 6px !important;
+    line-height: 0.88 !important;
+  }
+  .newspaper-left > div:nth-child(1),
+  .newspaper-left > div:nth-child(2) {
+    font-size: 9px !important;
+    letter-spacing: 1.5px !important;
+    margin-bottom: 2px !important;
+  }
+  .newspaper-left > div:nth-child(3) {
+    margin-bottom: 4px !important;
+  }
+  .newspaper-left > div:nth-child(4) {
+    margin-bottom: 8px !important;
+    font-size: 10px !important;
+    letter-spacing: 1.5px !important;
+  }
+  .newspaper-left > div:nth-child(6) {
+    margin-bottom: 5px !important;
+  }
+  /* 7 is now the kicker/byline block; the copy sits in 8 and the sign-off in 9 */
+  #s3-subhead {
+    margin-bottom: 6px !important;
+  }
+  #s3-subhead-title {
+    font-size: 13px !important;
+    letter-spacing: 2px !important;
+  }
+  #s3-subhead-byline {
+    font-size: 8px !important;
+    letter-spacing: 1.2px !important;
+  }
+  .newspaper-left > div:nth-child(8) > div {
+    font-size: 10px !important;
+    line-height: 1.45 !important;
+  }
+  .newspaper-left > div:nth-child(9) {
+    display: none !important;
+  }
+  .redacted-line {
+    font-size: 10px !important;
+    line-height: 1.45 !important;
+  }
+
+  /* Section 2: the plates tighten with the statement */
+  #s2-actions {
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .s2-action {
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 0.5em 0.8em 0.44em;
+  }
+
+  /* Section 4: widen SVG, adjust text */
+  #s4-woman {
+    width: 80% !important;
+  }
+  #s4-text {
+    font-size: clamp(16px, 4.5vw, 28px) !important;
+    padding: 10% 6% !important;
+    gap: 3vw 5vw !important;
+  }
+
+  /* Section 4: tracks stack into one column and tighten to fit 100vh */
+  #s4-tracks {
+    left: 6%;
+    right: 6%;
+    top: 18%;
+    bottom: 3%;
+    grid-template-columns: 1fr;
+    row-gap: 12px;
+    column-gap: 0;
+  }
+  .s4-track + .s4-track {
+    border-left: none;
+    padding-left: 0;
+  }
+  .s4-track-title {
+    font-size: clamp(16px, 4.6vw, 26px);
+  }
+  .s4-track-subtitle {
+    font-size: 9px;
+    letter-spacing: 3px;
+    margin-bottom: 5px;
+  }
+  .s4-track-body {
+    font-size: 9px;
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+  .s4-track-label {
+    font-size: 8px;
+    letter-spacing: 3px;
+    padding-top: 4px;
+    margin-bottom: 3px;
+  }
+  .s4-track-list {
+    font-size: 9px;
+    line-height: 1.35;
+    margin-bottom: 6px;
+  }
+  #s4-disclaimer {
+    margin-top: 8px;
+    padding-top: 6px;
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+
+  /* Section 6: narrow side columns on mobile */
+  #s6-left {
+    width: 28% !important;
+    left: 1% !important;
+  }
+  #s6-right {
+    width: 28% !important;
+    right: 1% !important;
+  }
+  #s6-thoughtcrime {
+    padding: 0 30% !important;
+    text-align: center;
+  }
+
+  /* Section 7: scale down card stack */
+  #s7-cards-wrapper {
+    width: 190px !important;
+    height: 265px !important;
+  }
+  #s7-math {
+    font-size: clamp(44px, 14vw, 90px) !important;
+    letter-spacing: 4px !important;
+  }
+  #s7-heading {
+    top: 7%;
+    font-size: clamp(17px, 5vw, 30px);
+    letter-spacing: 3px;
+  }
+  .s7-tag {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    padding: 0.3em 0.35em 0.26em;
+  }
+
+  /* Section 8: slightly smaller quote */
+  #s8-quote {
+    font-size: clamp(20px, 5.5vw, 40px) !important;
+  }
+
+  /* Loader title: tighten letter-spacing so it fits on narrow screens */
+  #loader-title {
+    letter-spacing: clamp(1px, 1.2vw, 4px) !important;
+    font-size: clamp(9px, 2.5vw, 14px) !important;
+    max-width: 90vw !important;
+    text-align: center;
+  }
+}

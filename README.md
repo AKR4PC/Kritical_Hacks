@@ -1,0 +1,100 @@
+# KriticalHacks 2026
+
+A 24 hour national level hackathon, presented as an Orwellian newsprint experience.
+Six chapters pinned to a fixed viewport, cut between each other with RGB tears,
+television static and a long blackout.
+
+Organised by **AssetMerkle × IGDTUW**, with **TinyFish** as the required
+integration.
+
+Built on a pixel-for-pixel recreation of [orwell.byholm.co](https://orwell.byholm.co/).
+The design system is the original's and is deliberately untouched: same sections,
+same scroll geometry, same 3D hero, same transitions, same type. Only the words
+changed.
+
+## Run it
+
+```bash
+npm install
+npm run dev      # http://127.0.0.1:5173
+npm run build    # type-check + production bundle into dist/
+npm run preview  # serve the production build
+```
+
+## The chapters
+
+| # | Chapter | What happens |
+|---|---------|--------------|
+| 0 | Hero | A 3D hand hangs `2 0 2 6` on four strings in a field of watching eyes, framed by **Kritical** / **Hacks**, **AssetMerkle × IGDTUW**, the TinyFish wordmark, **24HR Hackathon** and **Let's Build Together** |
+| 2 | The pitch | A line of prisoners drawn in path by path; the statement rises word by word, with the registration plates under it |
+| 3 | The bulletin | A sheet of newsprint unrolls 720°. **PRIZE POOL WORTH 175K+** is the only block set in reverse — black plate, red type |
+| 4 | Tracks | An enormous face is drawn as a hairline stroke; the two build tracks sit under it, separated by a rule |
+| 6 | The rulebook | Two columns of house rules and eligibility crawl in opposite directions around a turning black book |
+| 7 | The card stack | Nine photographs of judges and mentors pile up, each tagged as it lands, and `2 + 2 = 5` resolves out of the blast |
+| 8 | The last page | Newsprint, the last line, and the credits |
+
+Scroll up at any point and the chapters reassemble in reverse. The numbering is
+the recreation's own — it has no chapter 1 or 5.
+
+## How it is put together
+
+The components own the markup; everything that animates lives in plain modules
+under `src/lib`, because GSAP timelines, WebGL contexts and a scroll state
+machine are not React's business.
+
+```
+src/
+  components/     presentational markup, one file per chapter
+    illustrations/ the two inline SVGs, injected as raw markup so their
+                   thousands of paths can be measured and drawn individually
+  content/copy.ts every word on the page
+  lib/
+    env.ts            motion/viewport flags, sampled once at boot
+    gsap.ts           GSAP + SplitText + the shared Lenis instance
+    loaderController  typed title, progress counter, 620 ms RGB-tear reveal
+    grain.ts          coarse full-viewport film grain
+    transitions.ts    glitch / static / blackout / mobile-fade scene cuts
+    scrollDirector.ts the chapter state machine and every listener feeding it
+    cursorLabel.ts    the word that follows the pointer instead of a cursor
+    typewriter.ts     character-by-character reveal
+    scenes/           one module per chapter's own behaviour
+    three/            hero scene (hand, eyes, year digits) and the book scene
+  styles/
+    tokens.css    the palette, sampled from the source
+    global.css    layout, the redaction hover states, both breakpoints
+```
+
+### Fixed sections, real scroll
+
+Every chapter is `position: fixed` and mounted once. The page's scroll runway is
+nothing but `body { height: 1200vh }` (900vh on phones), and `scrollDirector`
+maps `scrollY` onto a fixed set of chapter boundaries. That is why the page can
+be scrubbed backwards and forwards without any of the chapters fighting each
+other.
+
+### What was changed, and what was not
+
+Changed: every string, the newspaper headline's reverse treatment, two call to
+action plates, the two-track body inside chapter 4, the chapter 6 columns, the
+judge/mentor tags, and one added heading. Nothing else.
+
+Kept on purpose, even though it looks like a bug: the source declares a
+fractal-noise paper texture on the bulletin and then its own inline `background`
+shorthand resets `background-image` to `none`, so the sheet is a flat tone. The
+portrait's `stroke-width: 85` is in the SVG's own user units, so it inks a
+hairline face rather than a slab.
+
+One judgement call worth stating: the stack settles within about 24px of itself,
+so nine tags held open at once stack into an illegible yellow smear. Each tag
+therefore prints itself as its card lands and strikes the previous one — the
+roster reads `JUDGE #1 → … → MENTOR #6` in scroll order, and two tags never
+collide.
+
+## Accessibility
+
+The experience is scroll-driven, so it works from the keyboard. Motion is
+respected: with `prefers-reduced-motion: reduce` every timeline resolves to its
+final state, the film grain and the custom cursor label switch off, and smooth
+scrolling is replaced by native scrolling. The one chapter that leaves you alone
+— the last page — restores the real system cursor. Every external link opens in
+a new tab with `rel="noopener noreferrer"`.
