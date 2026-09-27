@@ -128,8 +128,8 @@ body::-webkit-scrollbar {
 }
 
 .corner-name {
-  font-size: clamp(30px, 4.6vw, 68px) !important;
-  letter-spacing: 4px;
+  font-size: clamp(38px, 6.2vw, 92px) !important;
+  letter-spacing: 5px;
 }
 
 /*
@@ -306,10 +306,12 @@ body::-webkit-scrollbar {
   position: absolute;
   left: 8%;
   right: 8%;
-  /* Clears the TRACKS heading on short laptop viewports, where the heading is
-     tall enough to reach a fifth of the screen. */
-  top: max(22%, 180px);
-  bottom: 7%;
+  /* The TRACKS heading is a word wrapped in a masked line box, so the box it
+     paints in is ~1.3x the heading's own type size. Its inset above is the
+     overlay's `min(6vw, 8vh)` padding. Deriving the offset from both terms
+     keeps the columns clear of the heading at every shape. */
+  top: calc(min(6vw, 8vh) + 1.45 * clamp(32px, 5.5vw, 96px) + 10px);
+  bottom: 3%;
   z-index: 3;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -779,7 +781,7 @@ body::-webkit-scrollbar {
 
   /* The event name keeps the same edge padding and alignment, just smaller. */
   .corner-name {
-    font-size: clamp(14px, 4.4vw, 26px) !important;
+    font-size: clamp(15px, 4.6vw, 28px) !important;
     letter-spacing: 1.5px;
   }
 
@@ -890,18 +892,18 @@ body::-webkit-scrollbar {
   }
   #s4-text {
     font-size: clamp(16px, 4.5vw, 28px) !important;
-    padding: 6% 6% !important;
+    padding: min(6vw, 8vh) 6% !important;
     gap: 3vw 5vw !important;
   }
 
-  /* Section 4: tracks stack into one column and tighten to fit 100vh */
+  /* Section 4: tracks stack into one column and tighten to fit 100vh.
+     `top` stays on the shared formula so the columns never meet the heading. */
   #s4-tracks {
     left: 6%;
     right: 6%;
-    top: 15%;
-    bottom: 2%;
+    bottom: 1%;
     grid-template-columns: 1fr;
-    row-gap: 10px;
+    row-gap: 9px;
     column-gap: 0;
   }
   .s4-track + .s4-track {

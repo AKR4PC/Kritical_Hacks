@@ -2,9 +2,18 @@ import { gsap, getLenis } from './gsap';
 import { isMobile, prefersReducedMotion } from './env';
 
 const TITLE = 'WHAT A NATIONAL LEVEL HACKATHON LOOKS LIKE?';
-const PROGRESS_STEPS = [0, 19, 84, 100];
-/** The line printed under each counter value, centred beneath the digits. */
-const PROGRESS_CAPTIONS = ['3 Years', '20 Events', '24 Hackathon', 'welcome'];
+
+/**
+ * The counter states. The number is the headline figure; the line beneath it is
+ * only ever the bare word, never the figure again. The last state drops the
+ * figure and closes on WELCOME, which is what turns red before the reveal.
+ */
+const PROGRESS_STEPS = [
+  { value: '3', caption: 'YEARS' },
+  { value: '20', caption: 'EVENTS' },
+  { value: '24', caption: 'HACKATHON' },
+  { value: '', caption: 'WELCOME' },
+] as const;
 
 type HiddenListener = () => void;
 
@@ -151,9 +160,31 @@ function runBootSequence(
   const staggerOut = isMobile ? 0.05 : 0.1;
   const pauseBetweenSteps = isMobile ? 300 : 600;
 
-  function showNumber(value: number, onDone: () => void): void {
+  /** Clears the digits. Used by the closing state, which carries no figure. */
+  function clearNumber(onDone: () => void): void {
+    const existing = number.querySelectorAll('span');
+    if (existing.length === 0) {
+      number.textContent = '';
+      onDone();
+      return;
+    }
+    gsap.to(existing, {
+      clipPath: 'inset(0 0 100% 0)',
+      y: -40,
+      duration: 0.4,
+      ease: 'power3.in',
+      stagger: staggerOut,
+      onComplete: () => {
+        number.textContent = '';
+        onDone();
+      },
+    });
+  }
+
+  function showNumber(value: string, onDone: () => void): void {
+    if (value === '') return clearNumber(onDone);
     const animateIn = () => {
-      number.innerHTML = String(value)
+      number.innerHTML = value
         .split('')
         .map((d) => `<span style="display:inline-block">${d}</span>`)
         .join('');
@@ -186,20 +217,23 @@ function runBootSequence(
 
   function runCounter(index: number): void {
     if (index >= PROGRESS_STEPS.length) return;
-    const value = PROGRESS_STEPS[index];
+    const step = PROGRESS_STEPS[index];
+    const isFinal = index === PROGRESS_STEPS.length - 1;
     if (caption) {
-      caption.textContent = PROGRESS_CAPTIONS[index];
+      caption.textContent = step.caption;
       if (!prefersReducedMotion) {
         gsap.fromTo(
           caption,
           { opacity: 0, y: 10 },
-          { opacity: 0.75, y: 0, duration: 0.45, ease: 'power3.out' }
+          { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' }
         );
       }
     }
-    showNumber(value, () => {
-      if (value === 100) {
-        gsap.to(number, {
+    showNumber(step.value, () => {
+      if (isFinal) {
+        // The closing beat: the word itself goes red and holds, then the
+        // glitch tears it away.
+        gsap.to([number, caption].filter(Boolean), {
           color: '#cc0000',
           duration: 0.3,
           delay: 0.2,
@@ -236,10 +270,11 @@ function runBootSequence(
   number.textContent = '';
 
   if (prefersReducedMotion) {
+    const last = PROGRESS_STEPS[PROGRESS_STEPS.length - 1];
     title.textContent = TITLE;
-    number.textContent = '100';
+    if (caption) caption.textContent = last.caption;
     number.style.color = '#cc0000';
-    if (caption) caption.textContent = PROGRESS_CAPTIONS[PROGRESS_CAPTIONS.length - 1];
+    if (caption) caption.style.color = '#cc0000';
     animationDone = true;
     tryReveal();
   } else {

@@ -45,7 +45,11 @@ export function Section4Portrait() {
           alignContent: 'flex-start',
           justifyContent: 'center',
           gap: '1.5vw 2.5vw',
-          padding: '6% 8%',
+          // `min(6vw, 8vh)`: the 6% inset is a share of the WIDTH, which on a
+          // short, wide laptop is nearly a third of the screen and pushes the
+          // heading down onto the tracks. Capping it against the height keeps
+          // the heading on the same band on every shape.
+          padding: 'min(6vw, 8vh) 8%',
           zIndex: 2,
         }}
       >

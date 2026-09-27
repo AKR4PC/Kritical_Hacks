@@ -51,7 +51,8 @@ src/
   lib/
     env.ts            motion/viewport flags, sampled once at boot
     gsap.ts           GSAP + SplitText + the shared Lenis instance
-    loaderController  typed title, progress counter, 620 ms RGB-tear reveal
+    loaderController  typed title, the 3 / 20 / 24 / WELCOME counter, 620 ms
+                      RGB-tear reveal
     grain.ts          coarse full-viewport film grain
     transitions.ts    glitch / static / blackout / mobile-fade scene cuts
     scrollDirector.ts the chapter state machine and every listener feeding it
@@ -89,6 +90,21 @@ so nine tags held open at once stack into an illegible yellow smear. Each tag
 therefore prints itself as its card lands and strikes the previous one — the
 roster reads `MENTOR #1 → … → JUDGE #3` in scroll order, mentors landing first at
 the foot of the stack and judges on top, and two tags never collide.
+
+Two layout fixes were structural rather than cosmetic. The bulletin headline is
+the one child of its column carrying `overflow: hidden`, so any flex shrink
+silently cropped it — on a 1366×768 laptop it wrapped to two lines, overflowed
+the column, and lost 66px of type, which is why `175K+` seemed to dissolve into
+the black plate. It now sets `flex-shrink: 0` and is sized to hold one line. And
+the tracks overlay's `6%` inset resolves against the element's *width*, not its
+height, so on a short, wide laptop the TRACKS heading was eating a third of the
+screen and landing on the first track. The inset is now `min(6vw, 8vh)` and the
+columns start at an offset derived from both that inset and the heading's own
+type size, so the two stay apart from 320px to 1920px.
+
+Analytics is `@vercel/analytics/react` rather than `/next`: the `/next` entry
+imports `next/navigation` at module scope, which does not exist in a Vite app
+and fails the build.
 
 ## Accessibility
 

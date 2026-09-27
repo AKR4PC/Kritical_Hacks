@@ -45,11 +45,13 @@ export const Loader = forwardRef<HTMLDivElement>(function Loader(_, ref) {
         id="loader-caption"
         style={{
           fontFamily: 'var(--font-serif)',
-          fontSize: 'clamp(13px, 1.35vw, 21px)',
+          fontSize: 'clamp(17px, 1.8vw, 28px)',
+          fontWeight: 500,
           color: 'var(--white)',
-          letterSpacing: '6px',
-          opacity: 0.75,
-          minHeight: '26px',
+          letterSpacing: '8px',
+          textIndent: '8px',
+          lineHeight: 1.2,
+          minHeight: '34px',
           textAlign: 'center',
         }}
       />

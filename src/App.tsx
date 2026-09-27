@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { Loader } from './components/Loader';
 import { CornerSlogans } from './components/CornerSlogans';
 import { HeroCanvas } from './components/HeroCanvas';
@@ -89,6 +90,7 @@ export default function App() {
       <Section7Cards />
       <Section8Closing />
       <div id="cursor-text" ref={cursorRef} />
+      <Analytics />
     </>
   );
 }
