@@ -80,6 +80,17 @@ export default function App() {
 
   return (
     <>
+      {/*
+        The document's only real heading. Every visible line on the hero is a
+        positioned fragment of the name, and a crawler reads the rendered DOM
+        rather than the prerendered HTML, so the heading has to exist here too
+        — visually hidden, contributing no layout and no pixels, but keeping
+        the live tree and the served document describing the same thing.
+      */}
+      <h1 className="sr-only">
+        KriticalHacks 2026 — 24 hour national level hackathon by AssetMerkle × IGDTUW,
+        with TinyFish. AI/ML and Web3 tracks, prize pool worth 175K+.
+      </h1>
       <Loader ref={loaderRef} />
       <CornerSlogans />
       <HeroCanvas ref={heroCanvasRef} />

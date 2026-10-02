@@ -21,6 +21,44 @@ npm run build    # type-check + production bundle into dist/
 npm run preview  # serve the production build
 ```
 
+## Finding the site
+
+The experience is a single scroll-driven page, so there is exactly one URL worth
+indexing, and the whole job is making sure a crawler can see that URL's worth
+without running anything.
+
+`scripts/site.ts` holds the production origin and the published identity. A
+plugin in `vite.config.ts` (`kriticalhacks:publish-document`) reads it at build
+time and writes into `index.html`:
+
+- **Prerendered body.** Without this the served document is an empty
+  `<div id="root">` — every visible word arrives with React, so a crawler's
+  first pass sees a title and nothing else. The plugin emits the same copy as a
+  plain semantic outline (`h1`–`h4`, lists, sections), generated from
+  `src/content/copy.ts` so it cannot drift from the live page. `createRoot`
+  replaces it on boot, so nothing is duplicated and nothing is hidden from a
+  reader.
+- **Canonical URL**, plus `hreflang`.
+- **Open Graph and Twitter card**, pointing at `public/og-image.png` — the
+  single largest driver of real traffic when a link is shared on WhatsApp.
+- **JSON-LD** for `WebSite`, `Organization` and `Event`. The `Event` node is
+  the one piece that can earn something a plain blue link cannot: a rich result
+  with the date in it. Dates are omitted unless set in `scripts/site.ts`,
+  because a wrong date is worse than none.
+- **`robots.txt` and `sitemap.xml`**, emitted into `dist/` rather than
+  committed, since both have to carry the absolute origin.
+
+Two things are deliberately absent, and both are the same mistake: no extra
+keyword meta tag (ignored for ranking, and a spam signal), and no
+`robots.txt` that blocks anything a reader needs. A crawler reaching a page
+that is not worth indexing is a symptom, not a cure.
+
+The one lever that outranks all of the above is not technical. On a brand-new
+domain with no inbound links, Google is judging the site's trust as much as its
+text — mentions of the event from the organisers, the college, Unstop, and
+participants carry more weight than anything in this file. Point the search
+console at the deployed domain and submit the sitemap.
+
 ## The chapters
 
 | # | Chapter | What happens |

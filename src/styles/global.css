@@ -133,9 +133,10 @@ body::-webkit-scrollbar {
 }
 
 /*
- * The TinyFish wordmark holds the top-right slogan slot. The artwork ships
- * black, so it is knocked out to white to sit with the type it replaced at the
- * same optical weight; its internal 20%-opacity detail survives the filter.
+ * The TinyFish wordmark holds the top-right slogan slot. It is shown as the
+ * brand ships it — the black wordmark with its orange and peach fish marks,
+ * unfiltered — so the logo is recognisable at a glance. Black reads cleanly
+ * against the red field; no knockout is needed.
  */
 .corner-logo {
   display: flex;
@@ -148,12 +149,31 @@ body::-webkit-scrollbar {
   display: block;
   height: clamp(14px, 1.8vw, 28px);
   width: auto;
-  filter: brightness(0) invert(1);
 }
 
 .corner-logo:hover img,
 .corner-logo:focus-visible img {
-  filter: brightness(0) invert(1) opacity(0.55);
+  opacity: 0.7;
+}
+
+/* ── Utilities ──────────────────────────────────────────────────────── */
+
+/*
+ * Available to a screen reader and a crawler, absent from the page.
+ * The clip-rect form rather than `display: none`, which would drop the element
+ * out of the accessibility tree along with everything else.
+ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* ── Section 2 · Prisoners ───────────────────────────────────── */
