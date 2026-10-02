@@ -43,8 +43,9 @@ time and writes into `index.html`:
   single largest driver of real traffic when a link is shared on WhatsApp.
 - **JSON-LD** for `WebSite`, `Organization` and `Event`. The `Event` node is
   the one piece that can earn something a plain blue link cannot: a rich result
-  with the date in it. Dates are omitted unless set in `scripts/site.ts`,
-  because a wrong date is worse than none.
+  with the date in it. The offline build is marked 31 Oct – 1 Nov 2026 with a
+  24-hour duration, and the offer carries a `validFrom` for the day
+  registration opened rather than the event's start date.
 - **`robots.txt` and `sitemap.xml`**, emitted into `dist/` rather than
   committed, since both have to carry the absolute origin.
 
