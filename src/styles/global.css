@@ -219,6 +219,23 @@ body::-webkit-scrollbar {
   margin-top: 28px;
 }
 
+/*
+ * The dates and the status of registration, printed on their own row above the
+ * plates. Bebas at a wide tracking so it reads as a stamp rather than a
+ * paragraph, and a `100%` basis so it takes the full measure of the column
+ * however narrow that column happens to be.
+ */
+#s2-open {
+  flex: 1 0 100%;
+  margin: 0 0 2px;
+  font-family: var(--font-display);
+  font-size: clamp(11px, 1.15vw, 17px);
+  line-height: 1.5;
+  letter-spacing: 3px;
+  color: var(--white);
+  opacity: 0.9;
+}
+
 .s2-action {
   display: inline-flex;
   align-items: center;
@@ -899,6 +916,11 @@ body::-webkit-scrollbar {
   #s2-actions {
     gap: 8px;
     margin-top: 16px;
+  }
+  #s2-open {
+    font-size: 9.5px;
+    letter-spacing: 1.5px;
+    line-height: 1.5;
   }
   .s2-action {
     font-size: 13px;

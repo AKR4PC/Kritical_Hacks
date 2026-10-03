@@ -62,15 +62,24 @@ export const CALLS_TO_ACTION = [
 
 export const MASTHEAD = {
   paper: 'THE TIMES — KRITICAL HACKS EDITION',
-  issue: '24 HOUR HACKATHON — ASSETMERKLE × IGDTUW',
+  /** The dateline. Carries the dates the event actually runs on. */
+  issue: '31 OCT — 1 NOV 2026 · ASSETMERKLE × IGDTUW',
   edition: 'NATIONAL LEVEL BUILD EDITION — ALL PROJECTS MUST USE TINYFISH',
   headline: 'PRIZE POOL WORTH 175K+',
   kicker: '24 HOUR HACKATHON',
-  byline: 'ASSETMERKLE × IGDTUW PRESENTS KRITICAL HACKS',
+  byline: 'REGISTRATIONS OPEN — ASSETMERKLE × IGDTUW PRESENTS KRITICAL HACKS',
   footer: 'Curated and made with love — From US <3',
   caption:
     'OPEN CALL — ASSETMERKLE × IGDTUW. EVERY SUBMISSION WILL BE VERIFIED BY THE MINISTRY.',
 } as const;
+
+/**
+ * The single line that states when the hackathon is on and that the door is
+ * still open. Sits with the registration plates, so the two things a visitor
+ * needs — the dates and the way in — are in one place.
+ */
+export const REGISTRATION_NOTE =
+  'REGISTRATIONS OPEN · 31 OCT — 1 NOV 2026 · REGISTERS AT UNSTOP';
 
 export interface InfoBlock {
   /** The printed line. */

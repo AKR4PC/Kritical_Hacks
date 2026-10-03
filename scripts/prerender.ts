@@ -8,6 +8,7 @@ import {
   INFO_BLOCKS,
   INTRO,
   MASTHEAD,
+  REGISTRATION_NOTE,
   SLOGANS,
   TRACKS,
 } from '../src/content/copy';
@@ -95,6 +96,7 @@ export function renderPrerenderedBody(): string {
     <h2>About ${esc(EVENT.full)}</h2>
     <p>${esc(INTRO.quote)}</p>
     <p>${esc(MASTHEAD.edition)}</p>
+    <p>${esc(REGISTRATION_NOTE)}</p>
     <p>${esc(CALLS_TO_ACTION.map((c) => c.label).join(' · '))}</p>
   </section>
 

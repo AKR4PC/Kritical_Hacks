@@ -1,4 +1,4 @@
-import { CALLS_TO_ACTION, INTRO } from '../content/copy';
+import { CALLS_TO_ACTION, INTRO, REGISTRATION_NOTE } from '../content/copy';
 import { PrisonersArt } from './illustrations';
 
 /**
@@ -73,6 +73,14 @@ export function Section2Prisoners() {
         </p>
 
         <div id="s2-actions">
+          {/*
+            A full-width row ahead of the plates. `flex-basis: 100%` forces the
+            wrap, so the note occupies its own line and the two plates keep
+            whatever width they need. Revealed by the same tween that reveals
+            the plates, since it is a child of the element it animates.
+          */}
+          <p id="s2-open">{REGISTRATION_NOTE}</p>
+
           {CALLS_TO_ACTION.map((action) => (
             <a
               key={action.label}
